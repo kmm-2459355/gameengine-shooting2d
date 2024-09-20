@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1186445532844946202}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,6 +106,7 @@ MonoBehaviour:
   CircleBulletPrefab: {fileID: 1343731578636407137, guid: b3c727f4b177ffe45a0f70ebbecc65b6, type: 3}
   explosionPrefab: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 3}
   player: {fileID: 8207280245383925758, guid: 10fff1277e15dc84d93acc9c9b6ff879, type: 3}
+  xspeed: 0.5
   hp: 150
 --- !u!50 &1186445532844946202
 Rigidbody2D:

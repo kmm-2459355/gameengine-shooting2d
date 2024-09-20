@@ -1,13 +1,20 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UIElements;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public GameObject BulletPrefab;
-    GameObject explosionPrefab = null;
+    public GameObject explosionPrefab = null;
+    GameObject hpGauge;
+    GameObject spGauge;
     float time = 0;
     float span = 0.3f;
     float specialspan = 0.05f;
     float specialTime = 0f;
+    float cooltime = 0f;
     float delta = 0;
     const float LOAD_WIDTH = 4.5f;
     const float LOAD_HEIGHT = 4.5f;
@@ -16,7 +23,12 @@ public class PlayerController : MonoBehaviour
     private int hitCount = 0;
     bool isSpecial = false;
 
-
+    private void Start()
+    {
+        Application.targetFrameRate = 60;
+        this.hpGauge = GameObject.Find("HP_Yellow");
+        this.spGauge = GameObject.Find("SPButton");
+    }
     void Update()
     {
         this.time += Time.deltaTime; 
@@ -28,20 +40,14 @@ public class PlayerController : MonoBehaviour
             Instantiate(BulletPrefab, transform.position, Quaternion.identity);
         }
        //•KŽE‹Z
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isSpecial = true;
-        }
         if (isSpecial)
         {
-           
             this.specialTime += Time.deltaTime;
             if (this.delta > this.specialspan)
             {
                 this.delta = 0;
                 Instantiate(BulletPrefab, transform.position, Quaternion.identity);
             }
- 
         }
         if(this.specialTime > 5)
         {
@@ -93,16 +99,28 @@ public class PlayerController : MonoBehaviour
                 previousPos = currentPos;
             }
         }
-
+        if (isSpecial == false)
+        {
+            this.spGauge.GetComponent<UnityEngine.UI.Image>().fillAmount += 0.001f;
+        }
+    }
+    public void SPButtonDown()
+    {
+        if (this.spGauge.GetComponent<UnityEngine.UI.Image>().fillAmount == 1)
+        {
+            isSpecial = true;
+            this.spGauge.GetComponent<UnityEngine.UI.Image>().fillAmount -= 1;
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("EnemyBullet"))
         {
-            //hitCount++;
             Destroy(collision.gameObject);
-            if (hitCount >= 5)
+            this.hpGauge.GetComponent<UnityEngine.UI.Image>().fillAmount -= 0.1f;
+            if (this.hpGauge.GetComponent<UnityEngine.UI.Image>().fillAmount == 0)
             {
+                Instantiate(explosionPrefab, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }
         }

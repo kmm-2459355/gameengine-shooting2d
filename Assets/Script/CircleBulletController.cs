@@ -4,8 +4,8 @@ using UnityEngine.UIElements;
 public class CircleBulletController : MonoBehaviour
 {
     float delta = 0;
-    public float xspeed = 1.0f;
-    public float yspeed = 3f;
+    float xspeed = 0f;
+    float yspeed = 0f;
     private bool movingRight = true;
     private Vector3 startPosition;
     int hitCount = 0;
@@ -17,6 +17,8 @@ public class CircleBulletController : MonoBehaviour
         {
             movingRight = false;
         }
+        this.xspeed = Random.Range(1.5f, 4f);
+        this.yspeed = Random.Range(1.5f, 4f);
     }
     void Update()
     {

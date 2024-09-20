@@ -45,7 +45,7 @@ public class BossController : MonoBehaviour
         if (isDead == false)
         {
             this.time += Time.deltaTime;
-            if (time >= 3)
+            if (time >= 32)
             {
                 Vector3 position = transform.position;
 
@@ -115,44 +115,56 @@ public class BossController : MonoBehaviour
     }
    void mainShoot()
     {
-        GameObject bullet = Instantiate(BossBulletPrefab, MainBulletPosition, Quaternion.identity);
-        BossBulletController bulletScript = bullet.GetComponent<BossBulletController>();
-        if(bulletScript != null)
+        if (player != null)
         {
-            bulletScript.Initialize(player.position);
+            GameObject bullet = Instantiate(BossBulletPrefab, MainBulletPosition, Quaternion.identity);
+            BossBulletController bulletScript = bullet.GetComponent<BossBulletController>();
+            if (bulletScript != null)
+            {
+                bulletScript.Initialize(player.position);
+            }
         }
     }
     void subShoot()
     {
-        GameObject bulletl = Instantiate(SubBulletPrefab, lSubBulletPosition, Quaternion.identity);
-        GameObject bulletr = Instantiate(SubBulletPrefab, rSubBulletPosition, Quaternion.identity);
-        BossBulletController bulletlScript = bulletl.GetComponent<BossBulletController>();
-        BossBulletController bulletrScript = bulletr.GetComponent<BossBulletController>();
-        if (bulletlScript != null)
+        if (player != null)
         {
-            bulletlScript.Initialize(player.position);
-        }
-        if (bulletrScript != null)
-        {
-            bulletrScript.Initialize(player.position);
+            GameObject bulletl = Instantiate(SubBulletPrefab, lSubBulletPosition, Quaternion.identity);
+            GameObject bulletr = Instantiate(SubBulletPrefab, rSubBulletPosition, Quaternion.identity);
+            BossBulletController bulletlScript = bulletl.GetComponent<BossBulletController>();
+            BossBulletController bulletrScript = bulletr.GetComponent<BossBulletController>();
+            if (bulletlScript != null)
+            {
+                bulletlScript.Initialize(player.position);
+            }
+            if (bulletrScript != null)
+            {
+                bulletrScript.Initialize(player.position);
+            }
         }
     }
     void circleShoot()
     {
-        GameObject bulletl = Instantiate(CircleBulletPrefab, lCirclePosition, Quaternion.identity);
-        GameObject bulletr = Instantiate(CircleBulletPrefab, rCirclePosition, Quaternion.identity);
-        BossBulletController bulletlScript = bulletl.GetComponent<BossBulletController>();
-        BossBulletController bulletrScript = bulletr.GetComponent<BossBulletController>();
+        if (player != null)
+        {
+            GameObject bulletl = Instantiate(CircleBulletPrefab, lCirclePosition, Quaternion.identity);
+            GameObject bulletr = Instantiate(CircleBulletPrefab, rCirclePosition, Quaternion.identity);
+            BossBulletController bulletlScript = bulletl.GetComponent<BossBulletController>();
+            BossBulletController bulletrScript = bulletr.GetComponent<BossBulletController>();
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (player != null)
         {
-            hitCount++;
-            Destroy(collision.gameObject);
-            if (hitCount >= hp)
+            if (collision.gameObject.CompareTag("Bullet"))
             {
-                isDead = true;
+                hitCount++;
+                Destroy(collision.gameObject);
+                if (hitCount >= hp)
+                {
+                    isDead = true;
+                }
             }
         }
     }
