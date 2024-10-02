@@ -177,6 +177,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyBulletPrefab: {fileID: 4976202353790528386, guid: 68e0689c9bf013a4384dbcb43ce9522d, type: 3}
   explosionPrefab: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 3}
+  explosionSound: {fileID: 8300000, guid: 726cbcf72e6885848a20f536ad5e1e64, type: 3}
   hp: 2
+  span: 2
   xspeed: 2
   yspeed: 0.5
+  bulletSpeed: -0.1

@@ -225,7 +225,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      PlainStarfield_01 1_0: 6830105571062535785
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

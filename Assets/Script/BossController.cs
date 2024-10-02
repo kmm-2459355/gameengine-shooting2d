@@ -8,10 +8,12 @@ public class BossController : MonoBehaviour
     public GameObject SubBulletPrefab;
     public GameObject CircleBulletPrefab;
     public GameObject explosionPrefab = null;
+    public AudioClip explosionSound;
+    public AudioClip victorySound;
     public Transform  player;
     float time        = 0;
     float downspeed   = 1f;
-    float mainspan    = 0.5f;
+    float mainspan    = 0.3f;
     float subspan     = 3f;
     float circlespan  = 5f;
     float maindelta   = 0;
@@ -31,14 +33,26 @@ public class BossController : MonoBehaviour
     Vector3 ExplosionPosition2;
     private Vector3 targetDirection;
     private Vector3 startPosition;
-    public int hp = 0;
-    int hitCount  = 0;
     bool isDead = false;
+    bool isSound = true;
+    public GameObject hpBar;
+    public GameObject hpBarYellow;
+    public GameObject ClearDialog;
+    private AudioSource bgmAudioSource;
 
+
+    private void Awake()
+    {
+        hpBarYellow = GameObject.Find("BossHp_Yellow");
+    }
     void Start()
     {
         //初期位置を保存
         startPosition = transform.position;
+        hpBarYellow.SetActive(false);
+        hpBar.SetActive(false);
+        ClearDialog.SetActive(false);
+        bgmAudioSource = FindObjectOfType<AudioSource>();
     }
     void Update()
     {
@@ -55,6 +69,8 @@ public class BossController : MonoBehaviour
                 }
                 else
                 {
+                    hpBar.SetActive(true);
+                    hpBarYellow.SetActive(true);
                     this.maindelta += Time.deltaTime;
                     if (this.maindelta > this.mainspan)
                     {
@@ -81,7 +97,7 @@ public class BossController : MonoBehaviour
         if (isDead)
         {
             this.expdelta += Time.deltaTime;
-            if (this.expdelta > 0.05)
+            if (this.expdelta > 0.1)
             {
                 this.expdelta = 0;
                 rx = Random.Range(-1.5f, 1.5f);
@@ -112,6 +128,7 @@ public class BossController : MonoBehaviour
             //位置を更新
             transform.position = position;
         }
+        
     }
    void mainShoot()
     {
@@ -159,11 +176,23 @@ public class BossController : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Bullet"))
             {
-                hitCount++;
+                this.hpBarYellow.GetComponent<UnityEngine.UI.Image>().fillAmount -= 0.0035f;
                 Destroy(collision.gameObject);
-                if (hitCount >= hp)
+                if (this.hpBarYellow.GetComponent<UnityEngine.UI.Image>().fillAmount <= 0)
                 {
+                    AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+                    ClearDialog.SetActive(true);
                     isDead = true;
+                    if (isSound)
+                    {
+                        AudioSource.PlayClipAtPoint(victorySound, transform.position);
+                        isSound = false;
+                    }
+
+                    if (bgmAudioSource != null)
+                    {
+                        bgmAudioSource.Stop();
+                    }
                 }
             }
         }

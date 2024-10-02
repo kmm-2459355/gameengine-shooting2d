@@ -4,11 +4,13 @@ public class EnemyController : MonoBehaviour
 {
     public GameObject EnemyBulletPrefab;
     public GameObject explosionPrefab = null;
+    public AudioClip explosionSound;
     public int hp = 0;
-    float span = 2.5f;
+    public float span = 2.5f;
     float delta = 0;
     public float xspeed = 1.0f;
     public float yspeed = 3f;
+    public float bulletSpeed = -0.1f;
     float downspeed = 2f;
     private bool movingRight = false;
     private bool movingUp = false;
@@ -24,6 +26,7 @@ public class EnemyController : MonoBehaviour
         {
             movingRight = true;
         }
+        
     }
     void Update()
     {
@@ -32,7 +35,8 @@ public class EnemyController : MonoBehaviour
         if (this.delta > this.span)
         {
             this.delta = 0;
-            Instantiate(EnemyBulletPrefab, transform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(EnemyBulletPrefab, transform.position, Quaternion.identity);
+            bullet.GetComponent<EnemyBulletController>().Initialize(bulletSpeed);
         }
 
         //Œ»Ý‚ÌˆÊ’u‚ðŽæ“¾
@@ -90,8 +94,10 @@ public class EnemyController : MonoBehaviour
         {
             hitCount++;
             Destroy(collision.gameObject);
-            if (hitCount >= hp)
+
+            if (hitCount == hp)
             {
+                AudioSource.PlayClipAtPoint(explosionSound , transform.position);
                 Instantiate(explosionPrefab, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }

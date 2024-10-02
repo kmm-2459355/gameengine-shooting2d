@@ -3,12 +3,10 @@ using UnityEngine.UIElements;
 
 public class CircleBulletController : MonoBehaviour
 {
-    float delta = 0;
     float xspeed = 0f;
     float yspeed = 0f;
     private bool movingRight = true;
     private Vector3 startPosition;
-    int hitCount = 0;
     void Start()
     {
         //‰ŠúˆÊ’u‚ğ•Û‘¶
